@@ -240,6 +240,24 @@ const familia = [
     id: 6,
     dicho: "No sea asi, no sea rata marico,",
   },
+  {
+    nombre: "andrea",
+    Miembro: "tio de Franco",
+    id: 7,
+    dicho: "No sea asi, no sea rata marico,",
+  },
+  {
+    nombre: "Andras",
+    Miembro: "tio de Franco",
+    id: 8,
+    dicho: "No sea asi, no sea rata marico,",
+  },
+  {
+    nombre: "Carlos",
+    Miembro: "tio de Franco",
+    id: 9,
+    dicho: "No sea asi, no sea rata marico,",
+  },
 ];
 
 const getUserPromise = () => {
@@ -277,6 +295,7 @@ const getUser = async () => {
 // const pintarDom = () => {
 //   getUser();
 // };
+let click = 0;
 const loading = (estado) => {
   const $spinner = d.querySelector(".container-spiner");
   const $btnContainer = d.querySelector(".cards-container");
@@ -293,30 +312,33 @@ const pintarCard = (obj) => {
   const fragment = d.createDocumentFragment();
   const clone = template.cloneNode(true);
   const cardsContainer = d.querySelector(".cards-container");
-  pirmierClick(clone, fragment, cardsContainer);
-};
-// d.querySelector(".btn").style.display = "auto";
+  const deleteItem = cardsContainer.children;
 
-const pirmierClick = (clone, fragment, cardsContainer) => {
-  let contadorClick = 0;
-  if (contadorClick != 0) {
-    cardsContainer.removeChild(fragment);
+  const h3 = clone.querySelector(".nombre");
+  const h4 = clone.querySelector(".who");
+  const h5 = clone.querySelector(".lema");
+
+  if ((click = 1)) {
     h3.textContent = obj.nombre;
     h4.textContent = obj.Miembro;
     h5.textContent = obj.dicho;
+    click++;
     fragment.appendChild(clone);
     cardsContainer.appendChild(fragment);
-    contadorClick++;
-  } else {
-    const h3 = clone.querySelector(".nombre");
-    const h4 = clone.querySelector(".who");
-    const h5 = clone.querySelector(".lema");
-    h3.textContent = obj.nombre;
-    h4.textContent = obj.Miembro;
-    h5.textContent = obj.dicho;
-    fragment.appendChild(clone);
-    cardsContainer.appendChild(fragment);
+    console.log(deleteItem);
+    console.log(click);
   }
+  if (click > 1) {
+    deleteItem[1].style.border = "solid 5px black";
+    h3.textContent = obj.nombre;
+    h4.textContent = obj.Miembro;
+    h5.textContent = obj.dicho;
+    fragment.appendChild(clone);
+    cardsContainer.appendChild(fragment);
+    click++;
+  }
+
+  // d.getElementById("main").style.backgroundColor = "black";
 };
 
 d.addEventListener("click", (e) => {

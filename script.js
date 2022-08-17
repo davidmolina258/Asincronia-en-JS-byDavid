@@ -208,62 +208,70 @@ const familia = [
     Miembro: "Esposa de David Y Mama de Franco",
     id: 1,
     dicho: "Om mani padme hum",
-    img: "/asset/carly.jpg",
+    img: "./asset/carly.jpg",
   },
   {
     nombre: "Franco",
     Miembro: "Hijo de David y Carly",
     id: 2,
     dicho: "Soy un Carnivoro...",
+    img: "./asset/franco_photo.jpg",
   },
   {
     nombre: "Pedro",
     Miembro: "Abuelo de Franco",
     id: 3,
     dicho: "Familia que come unida, Permanece Unida",
+    img: "./asset/abuelo_pedro.jpg",
   },
   {
     nombre: "Rafaela",
     Miembro: "Abuela de Franco",
     id: 4,
     dicho: "Dios me lo bendiga",
+    img: "./asset/rafe_photo (1).jpg",
   },
   {
     nombre: "Daniel",
     Miembro: "tio de Franco",
     id: 5,
     dicho: "¿donde esta la Chiqui?",
+    img: "./asset/daniel_photo.jpg",
   },
   {
     nombre: "Pedro",
     Miembro: "tio de Franco",
     id: 6,
     dicho: "No sea asi, no sea rata marico,",
+    img: "./asset/pedro_photo.jpg",
   },
   {
     nombre: "andrea",
-    Miembro: "tio de Franco",
+    Miembro: "tia de Franco",
     id: 7,
-    dicho: "No sea asi, no sea rata marico,",
+    dicho: "No sea cherree!!,",
+    img: "./asset/Andrea_photo.jpg",
   },
   {
-    nombre: "Andras",
-    Miembro: "tio de Franco",
+    nombre: "Noah",
+    Miembro: "Primo de Franco",
     id: 8,
-    dicho: "No sea asi, no sea rata marico,",
+    dicho: "gu gu ga ga,",
+    img: "./asset/noah_photo (1).jpg",
   },
   {
-    nombre: "Carlos",
-    Miembro: "tio de Franco",
+    nombre: "David",
+    Miembro: "Papa de Franco",
     id: 9,
-    dicho: "No sea asi, no sea rata marico,",
+    dicho: "no se trata de lo que nos gusta, sino lo que nos combiene",
+    img: "./asset/david_photo.jpg",
   },
 ];
 
 const getUserPromise = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      let id = Math.floor(Math.random() * 10);
+      let id = Math.round(Math.random() * 10);
 
       console.log(id);
       let user = familia.find((el) => el.id === id);
@@ -275,16 +283,13 @@ const getUserPromise = () => {
     }, 3000);
   });
 };
-// getUserPromise()
-//   .then((obj) => console.log(obj.nombre))
-//   .catch((error) => console.log(error));
 
 const getUser = async () => {
   try {
     loading(true);
     const familiar = await getUserPromise();
-    console.log(familiar);
-    pintarCard(familiar);
+    isClicked ? resetCard(familiar) : pintarCard(familiar);
+    console.log(isClicked);
   } catch (error) {
     console.log(error);
   } finally {
@@ -292,10 +297,15 @@ const getUser = async () => {
   }
 };
 
-// const pintarDom = () => {
-//   getUser();
-// };
-let click = 0;
+let isClicked = false;
+const resetCard = (data) => {
+  console.log("funciona reset");
+  const cardsContainer = d.querySelector(".cards");
+  let lista = [...cardsContainer.children];
+  console.log(lista);
+  lista.forEach((el) => el.classList.add("none"));
+  pintarCard(data);
+};
 const loading = (estado) => {
   const $spinner = d.querySelector(".container-spiner");
   const $btnContainer = d.querySelector(".cards-container");
@@ -311,34 +321,24 @@ const pintarCard = (obj) => {
   const template = d.getElementById("template").content;
   const fragment = d.createDocumentFragment();
   const clone = template.cloneNode(true);
-  const cardsContainer = d.querySelector(".cards-container");
-  const deleteItem = cardsContainer.children;
+  const cardsContainer = d.querySelector(".cards");
+  // const deleteItem = cardsContainer.children;
 
+  const image = clone.querySelector("img");
   const h3 = clone.querySelector(".nombre");
   const h4 = clone.querySelector(".who");
   const h5 = clone.querySelector(".lema");
+  console.log(cardsContainer);
 
-  if ((click = 1)) {
-    h3.textContent = obj.nombre;
-    h4.textContent = obj.Miembro;
-    h5.textContent = obj.dicho;
-    click++;
-    fragment.appendChild(clone);
-    cardsContainer.appendChild(fragment);
-    console.log(deleteItem);
-    console.log(click);
-  }
-  if (click > 1) {
-    deleteItem[1].style.border = "solid 5px black";
-    h3.textContent = obj.nombre;
-    h4.textContent = obj.Miembro;
-    h5.textContent = obj.dicho;
-    fragment.appendChild(clone);
-    cardsContainer.appendChild(fragment);
-    click++;
-  }
+  image.setAttribute("src", obj.img);
+  clone.querySelector(".card").setAttribute("id", obj.id);
+  h3.textContent = obj.nombre;
+  h4.textContent = obj.Miembro;
+  h5.textContent = obj.dicho;
+  fragment.appendChild(clone);
+  cardsContainer.appendChild(fragment);
 
-  // d.getElementById("main").style.backgroundColor = "black";
+  isClicked = true;
 };
 
 d.addEventListener("click", (e) => {
